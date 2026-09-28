@@ -1,8 +1,8 @@
 class Mdview < Formula
   desc "Native macOS Markdown viewer"
   homepage "https://github.com/hshankar/mdview"
-  url "https://github.com/hshankar/mdview/archive/refs/tags/v0.1.7.tar.gz"
-  sha256 "7f27c9bd135bf6002580104852c1065f72956228b3cf65354da9528ea4d98dba"
+  url "https://github.com/hshankar/mdview/archive/refs/tags/v0.1.8.tar.gz"
+  sha256 "c3e85633bf1c66a612ecb56888a8f82ad3af838cfb960f2fcc8cf1df84cf0c85"
   license "MIT"
 
   def install
