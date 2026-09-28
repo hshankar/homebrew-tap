@@ -6,7 +6,7 @@ class Mdview < Formula
   license "MIT"
 
   def install
-    system "swift", "build", "-c", "release"
+    system "swift", "build", "-c", "release", "--disable-sandbox"
     bin.install ".build/release/mdview"
     bin.install ".build/release/mdview_MDView.bundle"
   end
