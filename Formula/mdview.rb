@@ -1,29 +1,32 @@
 class Mdview < Formula
   desc "Native macOS Markdown viewer"
   homepage "https://github.com/hshankar/mdview"
-  url "https://github.com/hshankar/mdview/archive/refs/tags/v0.1.10.tar.gz"
-  sha256 "e9b6b7874b211af7189e66a08139072a2a61d1bbf6986e45050351b92c0f6f0c"
+  url "https://github.com/hshankar/mdview/archive/refs/tags/v0.1.11.tar.gz"
+  sha256 "56ae3cb0d362583586ee9e1598f9afd8ba536542a4630ae995674b6162b9ee55"
   license "MIT"
 
   def install
     system "swift", "build", "-c", "release", "--disable-sandbox"
-    bin.install ".build/release/mdview"
-    bin.install ".build/release/mdview_MDView.bundle"
 
+    build_bin = buildpath/".build/release"
     app = prefix/"MDView.app"
-    system buildpath/"scripts/create-app-bundle.sh",
-           bin/"mdview",
-           app,
-           opt_bin/"mdview"
+    system (buildpath/"scripts/create-app-bundle.sh").to_s,
+           (build_bin/"mdview").to_s,
+           app.to_s,
+           (opt_bin/"mdview").to_s
+
+    bin.install build_bin/"mdview"
+    bin.install build_bin/"mdview_MDView.bundle"
   end
 
-  post_install_steps do
-    if_path_exists "MDView.app", base: :prefix do
-      run "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister",
-          args: ["-gc"]
-      run "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister",
-          args: ["-f", "{{opt_prefix}}/MDView.app"]
-    end
+  def caveats
+    <<~EOS
+      MDView.app is installed at:
+        #{opt_prefix}/MDView.app
+
+      Open it once to register it with macOS Launch Services:
+        open "#{opt_prefix}/MDView.app"
+    EOS
   end
 
   test do
