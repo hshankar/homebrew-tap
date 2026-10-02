@@ -1,22 +1,21 @@
 class Mdview < Formula
   desc "Native macOS Markdown viewer"
   homepage "https://github.com/hshankar/mdview"
-  url "https://github.com/hshankar/mdview/archive/refs/tags/v0.1.11.tar.gz"
-  sha256 "56ae3cb0d362583586ee9e1598f9afd8ba536542a4630ae995674b6162b9ee55"
+  url "https://github.com/hshankar/mdview/releases/download/v0.1.12/mdview-0.1.12-macos-universal.tar.gz"
+  sha256 "1e3ee394908dc14e13298d84791eecf6a710e675f169169df67cb1c6c7c8e99e"
   license "MIT"
 
-  def install
-    system "swift", "build", "-c", "release", "--disable-sandbox"
+  depends_on macos: :ventura
 
-    build_bin = buildpath/".build/release"
+  def install
     app = prefix/"MDView.app"
-    system (buildpath/"scripts/create-app-bundle.sh").to_s,
-           (build_bin/"mdview").to_s,
+    system (buildpath/"create-app-bundle.sh").to_s,
+           (buildpath/"mdview").to_s,
            app.to_s,
            (opt_bin/"mdview").to_s
 
-    bin.install build_bin/"mdview"
-    bin.install build_bin/"mdview_MDView.bundle"
+    bin.install "mdview"
+    bin.install "mdview_MDView.bundle"
   end
 
   def caveats
